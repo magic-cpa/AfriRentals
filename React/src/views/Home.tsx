@@ -3,6 +3,7 @@ import background from '../assets/images/still-life-keys-new-home.jpg'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import Location from './components/location';
 
  const backgroundImageStyle = {
     backgroundImage: `url(${background})`,
@@ -13,19 +14,33 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 };
 
 const Home = function(){
+    const [Popup, SetPopup] = useState(false); 
+
+    const HandlePopUp = () => {
+      SetPopup(prev => !prev);
+    };
+
+    const HandleSearchRent = async (e:React.SyntheticEvent)=>{
+      e.preventDefault()
+      console.log('event passed')
+    }
+
     return(
         <>
     {/* Background */}
     <div style={backgroundImageStyle} className="flex items-center justify-center">
-    <form>
-      <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg">
+    <form className='search_rental' onSubmit={HandleSearchRent}>
+      <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" onClick={HandlePopUp}>
+        
         {/* Where to go */}
-        <div className="list_search flex justify-center items-center borde">
+        <div className="relative w-full">
+      {/* Where to go */}
+      <div className="list_search flex justify-center items-center borde" >
             <div className='block w-full border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
-            <AddLocationAltIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
+            <AddLocationAltIcon style={{ fontSize: '2rem' }} className="mr-2 text-gray-600" />
             <div className='search_asset'>
-              <label>destination</label>
+              <label>Destination</label>
               <input
                 id="destination"
                 type="text"
@@ -33,10 +48,16 @@ const Home = function(){
                 className="hidden"
                 readOnly
               />
-              </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Popup positioned directly below "Where to go" */}
+      <div className={`absolute left-0 top-full mt-2 w-full ${Popup ? 'block' : 'hidden'}`}>
+        <Location />
+      </div>
+    </div>
 
         {/* Booking dates */}
         <div className="list_search flex justify-center items-center borde">
@@ -62,6 +83,7 @@ const Home = function(){
             </div>
             </div>
           </div>
+
         </div>
 
         {/* Travelers */}
@@ -94,6 +116,8 @@ const Home = function(){
       </div>
       </form>
     </div>
+
+    
     
         </>
     )
