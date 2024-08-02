@@ -11,7 +11,7 @@ const MainLayout = ()=>{
               <main className="flex-grow"> 
                 <Outlet/>
               </main> 
-            <Footer/>
+        
         </div>
         </>
     )
