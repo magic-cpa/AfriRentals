@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react'
 import background from '../assets/images/still-life-keys-new-home.jpg'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
  const backgroundImageStyle = {
     backgroundImage: `url(${background})`,
@@ -13,37 +15,75 @@ import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 const Home = function(){
     return(
         <>
-        <div style={backgroundImageStyle} className="flex items-center justify-center">
-      <div className="flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg">
+    {/* Background */}
+    <div style={backgroundImageStyle} className="flex items-center justify-center">
+    <form>
+      <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg">
         {/* Where to go */}
-        <div className="mb-4">
-            <AddLocationAltIcon/>
-          <input
-            id="destination"
-            type="text"
-            placeholder="Enter your destination"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
+        <div className="list_search flex justify-center items-center borde">
+            <div className='block w-full border border-grey-400 rounded-sm p-2'>
+                <div className="flex items-center mb-2">
+            <AddLocationAltIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
+            <div className='search_asset'>
+              <label>destination</label>
+              <input
+                id="destination"
+                type="text"
+                placeholder="Enter your destination"
+                className="hidden"
+                readOnly
+              />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Booking dates */}
-        <div className="mb-4">
-          <input
-            id="dates"
-            type="text"
-            placeholder="Select dates"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
+        <div className="list_search flex justify-center items-center borde">
+            <div className='block w-full border border-grey-400 rounded-sm p-2'>
+            <div className="flex items-center mb-2">
+            <CalendarMonthIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
+            <div className='search_asset'>
+              <label className="text-xs">dates de réservation</label>
+              <input
+                id="date_debut"
+                type="hidden"
+                placeholder="Select dates"
+                className="hidden"
+                readOnly
+              />
+              <input
+                id="date_fin"
+                type="hidden"
+                placeholder="Select dates"
+                className="hidden"
+                readOnly
+              />
+            </div>
+            </div>
+          </div>
         </div>
 
         {/* Travelers */}
-        <div className="mb-4">
-          <input
-            id="travelers"
-            type="number"
-            placeholder="Number of travelers"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
+        <div className="list_search flex justify-center items-center borde">
+            <div className='block border border-grey-400 rounded-sm p-2'>
+                <div className="flex items-center mb-2">
+                    <HowToRegIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
+                    <div className='search_asset'>
+                      <label className="text-xs">Nombre de voyageurs</label>
+                        <input type="text" id="travelers"
+                        className="hidden"
+                        value="3 travelers"
+                        readOnly/>
+                      <span
+                        data-stid="open-room-picker" aria-expanded="true"
+                        aria-label="Travelers, 3 travelers"
+                        className="uitk-menu-trigger open-traveler-picker-observer-root uitk-fake-input uitk-form-field-trigger"
+                        >3 voyageurs
+                      </span>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <button
@@ -52,7 +92,9 @@ const Home = function(){
           Search
         </button>
       </div>
+      </form>
     </div>
+    
         </>
     )
 }
