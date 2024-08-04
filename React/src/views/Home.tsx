@@ -1,9 +1,15 @@
-import {useState, useEffect} from 'react'
+import {useState, useRef, useEffect} from 'react'
+import dayjs, { Dayjs } from 'dayjs';
 import background from '../assets/images/still-life-keys-new-home.jpg'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import { Button } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import Location from './components/location';
+import BoookingDate from './components/bookingDates';
+import Travelers from './components/travelers';
+import { DataStrategyMatch } from '@remix-run/router/dist/utils';
 
  const backgroundImageStyle = {
     backgroundImage: `url(${background})`,
@@ -14,15 +20,25 @@ import Location from './components/location';
 };
 
 const Home = function(){
-    const [Popup, SetPopup] = useState(false); 
+    const [activePopup, setActivePopup] = useState('');
+    const [checkInDate, setCheckInDate] = useState<Dayjs>(dayjs())
+    const [checkOutDate,setCheckOutDate] = useState<Dayjs>(dayjs())
+    const [loadingSearch, setLoadingSearch] = useState(false)
+    const bookingRef = useRef<HTMLDivElement>(null)
 
-    const HandlePopUp = () => {
-      SetPopup(prev => !prev);
+    const handlePopup = (popup: string) => {
+      setActivePopup((prev) => (prev === popup ? '' : popup));
     };
+  
 
     const HandleSearchRent = async (e:React.SyntheticEvent)=>{
       e.preventDefault()
+      setLoadingSearch(true)
       console.log('event passed')
+
+      setTimeout(()=>{
+        setLoadingSearch(false)
+      },2000)
     }
 
     return(
@@ -30,12 +46,11 @@ const Home = function(){
     {/* Background */}
     <div style={backgroundImageStyle} className="flex items-center justify-center">
     <form className='search_rental' onSubmit={HandleSearchRent}>
-      <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" onClick={HandlePopUp}>
+      <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" >
         
-        {/* Where to go */}
-        <div className="relative w-full">
+      <div className="relative w-full">
       {/* Where to go */}
-      <div className="list_search flex justify-center items-center borde" >
+      <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('location')}>
             <div className='block w-full border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
             <AddLocationAltIcon style={{ fontSize: '2rem' }} className="mr-2 text-gray-600" />
@@ -54,13 +69,16 @@ const Home = function(){
       </div>
 
       {/* Popup positioned directly below "Where to go" */}
-      <div className={`absolute left-0 top-full mt-2 w-full ${Popup ? 'block' : 'hidden'}`}>
-        <Location />
-      </div>
+      {activePopup === 'location' && (
+          <div className="absolute left-0 top-full mt-2 w-full">
+            <Location />
+          </div>
+      )}
     </div>
 
         {/* Booking dates */}
-        <div className="list_search flex justify-center items-center borde">
+        <div className="relative w-full">
+        <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('booking')}>
             <div className='block w-full border border-grey-400 rounded-sm p-2'>
             <div className="flex items-center mb-2">
             <CalendarMonthIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
@@ -71,6 +89,7 @@ const Home = function(){
                 type="hidden"
                 placeholder="Select dates"
                 className="hidden"
+                value={checkInDate.format('YYYY-MM-DD')}
                 readOnly
               />
               <input
@@ -78,16 +97,27 @@ const Home = function(){
                 type="hidden"
                 placeholder="Select dates"
                 className="hidden"
+                value={checkOutDate.format('YYYY-MM-DD')}
                 readOnly
               />
             </div>
             </div>
           </div>
-
+        </div>
+        {activePopup === 'booking' && (
+          <div ref={bookingRef} className="date_Calender absolute left-0 top-full mt-2 w-full bg-white p-4 rounded-lg shadow-lg z-10">
+            <BoookingDate 
+                checkInDate={checkInDate}
+                checkOutDate={checkOutDate}
+                setCheckInDate={setCheckInDate}
+                setCheckOutDate={setCheckOutDate} />
+          </div>
+        )}
         </div>
 
         {/* Travelers */}
-        <div className="list_search flex justify-center items-center borde">
+        <div className="relative w-full">
+        <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('travelers')}>
             <div className='block border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
                     <HowToRegIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
@@ -106,13 +136,24 @@ const Home = function(){
                     </div>
                 </div>
             </div>
+            {activePopup === 'travelers' && (
+              <div className="absolute left-0 top-full mt-2 w-full">
+                <Travelers />
+              </div>
+            )}
         </div>
-        
-        <button
+        </div>
+
+        {/* search button */}
+        <Button
           type="submit"
-          className="w-28 bg-indigo-600 text-white p-2 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          Search
-        </button>
+          className="w-28 bg-indigo-600 text-white p-2 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          startIcon={loadingSearch && <CircularProgress size={16} />}
+          disabled={loadingSearch}
+        >
+          {loadingSearch ? 'Loading...' : 'Search'}
+        </Button>
+        
       </div>
       </form>
     </div>
