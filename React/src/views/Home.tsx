@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Location from './components/location';
 import BoookingDate from './components/bookingDates';
 import Travelers from './components/travelers';
+import TypingEffect from './components/beautifulText';
 import { DataStrategyMatch } from '@remix-run/router/dist/utils';
 
  const backgroundImageStyle = {
@@ -19,11 +20,20 @@ import { DataStrategyMatch } from '@remix-run/router/dist/utils';
     width: '100%'    // Full width
 };
 
-const Home = function(){
+const Home: React.FC = function(){
+    const Text:string = "Planifiez votre prochaine aventure avec nous"
     const [activePopup, setActivePopup] = useState('');
-    const [checkInDate, setCheckInDate] = useState<Dayjs>(dayjs())
-    const [checkOutDate,setCheckOutDate] = useState<Dayjs>(dayjs())
-    const [loadingSearch, setLoadingSearch] = useState(false)
+    const [loadingSearch, setLoadingSearch] = useState(false);
+    {/* Travelers states */}
+    const [adultesCount, setAdultesCount] = useState(0);
+    const [enfantsCount, setEnfantsCount] = useState(0);
+    const [petChecked, setPetChecked] = useState(false);
+    {/* Booking dates states */}
+    const [checkInDate, setCheckInDate] = useState<Dayjs>(dayjs()); 
+    const [checkOutDate,setCheckOutDate] = useState<Dayjs>(dayjs());
+    {/* Search location states */}
+    const [searchLocation, setSearchLocation] = useState('')
+
     const bookingRef = useRef<HTMLDivElement>(null)
 
     const handlePopup = (popup: string) => {
@@ -44,13 +54,16 @@ const Home = function(){
     return(
         <>
     {/* Background */}
-    <div style={backgroundImageStyle} className="flex items-center justify-center">
-    <form className='search_rental' onSubmit={HandleSearchRent}>
-      <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" >
+    <div style={backgroundImageStyle} className="flex flex-col items-center justify-center">
+      <div className='p-2'>
+        <TypingEffect text={Text} />
+      </div>
+      <form className='search_rental' onSubmit={HandleSearchRent}>
+        <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" >
         
-      <div className="relative w-full">
-      {/* Where to go */}
-      <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('location')}>
+        <div className="relative w-full">
+        {/* Where to go */}
+        <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('location')}>
             <div className='block w-full border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
             <AddLocationAltIcon style={{ fontSize: '2rem' }} className="mr-2 text-gray-600" />
@@ -61,6 +74,8 @@ const Home = function(){
                 type="text"
                 placeholder="Enter your destination"
                 className="hidden"
+                onChange={()=>setSearchLocation}
+                value={searchLocation}
                 readOnly
               />
             </div>
@@ -71,7 +86,7 @@ const Home = function(){
       {/* Popup positioned directly below "Where to go" */}
       {activePopup === 'location' && (
           <div className="absolute left-0 top-full mt-2 w-full">
-            <Location />
+            <Location searchLocation={searchLocation} setSearchLocation={setSearchLocation}/>
           </div>
       )}
     </div>
@@ -86,8 +101,8 @@ const Home = function(){
               <div className='flex flex-col'>
                 <label className="text-xs">dates de réservation</label>
                 <div>
-                  <span className='text-xs'>date dabut</span>
-                  <span className='text-xs'>date fin</span>
+                  <p className='text-xs'><span className='font-bold'>date dabut:</span> {checkInDate.format('YYYY-MM-DD')}</p>
+                  <span className='text-xs'> <span className='font-bold'>date fin:</span> {checkOutDate.format('YYYY-MM-DD')}</span>
                 </div>
               </div>
               <input
@@ -131,13 +146,13 @@ const Home = function(){
                       <label className="text-xs">Nombre de voyageurs</label>
                         <input type="text" id="travelers"
                         className="hidden"
-                        value="3 travelers"
+                        value={`${adultesCount + enfantsCount} voyageurs${petChecked ? ', avec animaux de compagnie' : ''}`}
                         readOnly/>
                       <span
                         data-stid="open-room-picker" aria-expanded="true"
                         aria-label="Travelers, 3 travelers"
                         className="uitk-menu-trigger open-traveler-picker-observer-root uitk-fake-input uitk-form-field-trigger"
-                        >3 voyageurs
+                        >{`${adultesCount + enfantsCount} voyageurs${petChecked ? ', avec animaux de compagnie' : ''}`}
                       </span>
                     </div>
                 </div>
@@ -146,7 +161,14 @@ const Home = function(){
         </div>
             {activePopup === 'travelers' && (
               <div className="absolute left-0 top-full mt-2 w-full">
-                <Travelers />
+                <Travelers
+                adultesCount={adultesCount}
+                enfantsCount={enfantsCount}
+                petsChecked={petChecked}
+                setAdultesCount={setAdultesCount}
+                setEnfantsCount={setEnfantsCount}
+                setPetChecked={setPetChecked}
+                />
               </div>
             )}
         </div>

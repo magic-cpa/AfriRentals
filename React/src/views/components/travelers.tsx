@@ -1,13 +1,26 @@
 import {useState} from 'react'
 
-const Travelers = function(){
-    const [adultesCount, setAdultesCount] = useState(0);
-    const [enfantsCount, setEnfantsCount] = useState(0);
-    const incrementAdultes = () => setAdultesCount(adultesCount + 1)
-    const decrementAdultes = () => setAdultesCount(adultesCount > 0 ? adultesCount - 1 : 0)
+interface TravelersProps {
+  adultesCount: number;
+  enfantsCount: number;
+  petsChecked: boolean;
+  setAdultesCount: React.Dispatch<React.SetStateAction<number>>;
+  setEnfantsCount: React.Dispatch<React.SetStateAction<number>>;
+  setPetChecked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Travelers: React.FC<TravelersProps>  = function({adultesCount, enfantsCount, petsChecked, setAdultesCount, 
+  setEnfantsCount,
+  setPetChecked,}){
   
-    const incrementEnfants = () => setEnfantsCount(enfantsCount + 1)
-    const decrementEnfants = () => setEnfantsCount(enfantsCount > 0 ? enfantsCount - 1 : 0)
+
+    const incrementAdultes = () => setAdultesCount((prevCount) => prevCount + 1);
+    const decrementAdultes = () => setAdultesCount((prevCount) => Math.max(prevCount - 1, 0));
+
+    const incrementEnfants = () => setEnfantsCount((prevCount) => prevCount + 1);
+    const decrementEnfants = () => setEnfantsCount((prevCount) => Math.max(prevCount - 1, 0));
+
+    const handlePetsChecked = () => setPetChecked(!petsChecked);
     return(
         <>
         <div className="flex justify-center items-center p-4 bg-gray-100">
@@ -51,7 +64,18 @@ const Travelers = function(){
             onClick={incrementEnfants}>
             +
           </button>
+          
           </div>
+        </div>
+        <div className="mt-2">
+          <div className="mb-2">
+            <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer" 
+            onChange={handlePetsChecked} checked={petsChecked} />
+            <label className="ml-2 text-gray-800">Je voyage avec des animaux de compagnie</label>
+          </div>
+          <span className="ml-1 text-xs text-gray-600">
+            Si cette case est cochée, seuls les établissements qui acceptent les animaux de compagnie seront affichés
+          </span>
         </div>
       </div>
     </div>
