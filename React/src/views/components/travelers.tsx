@@ -51,7 +51,17 @@ const Travelers = function(){
             onClick={incrementEnfants}>
             +
           </button>
+          
           </div>
+        </div>
+        <div className="mt-2">
+          <div className="mb-2">
+            <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer" />
+            <label className="ml-2 text-gray-800">Je voyage avec des animaux de compagnie</label>
+          </div>
+          <span className="ml-1 text-xs text-gray-600">
+            Si cette case est cochée, seuls les établissements qui acceptent les animaux de compagnie seront affichés
+          </span>
         </div>
       </div>
     </div>

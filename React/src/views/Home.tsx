@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Location from './components/location';
 import BoookingDate from './components/bookingDates';
 import Travelers from './components/travelers';
+import TypingEffect from './components/beautifulText';
 import { DataStrategyMatch } from '@remix-run/router/dist/utils';
 
  const backgroundImageStyle = {
@@ -20,6 +21,7 @@ import { DataStrategyMatch } from '@remix-run/router/dist/utils';
 };
 
 const Home = function(){
+    const Text:string = "Planifiez votre prochaine aventure avec nous"
     const [activePopup, setActivePopup] = useState('');
     const [checkInDate, setCheckInDate] = useState<Dayjs>(dayjs())
     const [checkOutDate,setCheckOutDate] = useState<Dayjs>(dayjs())
@@ -44,13 +46,16 @@ const Home = function(){
     return(
         <>
     {/* Background */}
-    <div style={backgroundImageStyle} className="flex items-center justify-center">
-    <form className='search_rental' onSubmit={HandleSearchRent}>
-      <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" >
+    <div style={backgroundImageStyle} className="flex flex-col items-center justify-center">
+      <div className='p-2'>
+        <TypingEffect text={Text} />
+      </div>
+      <form className='search_rental' onSubmit={HandleSearchRent}>
+        <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" >
         
-      <div className="relative w-full">
-      {/* Where to go */}
-      <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('location')}>
+        <div className="relative w-full">
+        {/* Where to go */}
+        <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('location')}>
             <div className='block w-full border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
             <AddLocationAltIcon style={{ fontSize: '2rem' }} className="mr-2 text-gray-600" />
