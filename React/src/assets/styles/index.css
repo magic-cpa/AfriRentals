@@ -62,13 +62,28 @@ button {
   align-items: center;
   justify-content: space-around;
 }
+
 .list_search{
   cursor: pointer;
   width: 100%;
 }
+
 .list_search label{
   cursor: pointer;
 }
+
 .date_Calender{
   width: 41rem; 
+}
+
+.travelers_type{
+  padding: 1rem;
+  padding-left: 0rem;
+}
+
+.dest_disply{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  height: 200px;
+  padding: 0.2rem;
 }
