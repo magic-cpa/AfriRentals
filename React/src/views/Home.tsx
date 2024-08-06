@@ -55,7 +55,7 @@ const Home = function(){
                 <div className="flex items-center mb-2">
             <AddLocationAltIcon style={{ fontSize: '2rem' }} className="mr-2 text-gray-600" />
             <div className='search_asset'>
-              <label>Destination</label>
+              <label className="text-xs">Destination</label>
               <input
                 id="destination"
                 type="text"
@@ -83,7 +83,13 @@ const Home = function(){
             <div className="flex items-center mb-2">
             <CalendarMonthIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
             <div className='search_asset'>
-              <label className="text-xs">dates de réservation</label>
+              <div className='flex flex-col'>
+                <label className="text-xs">dates de réservation</label>
+                <div>
+                  <span className='text-xs'>date dabut</span>
+                  <span className='text-xs'>date fin</span>
+                </div>
+              </div>
               <input
                 id="date_debut"
                 type="hidden"
@@ -118,10 +124,10 @@ const Home = function(){
         {/* Travelers */}
         <div className="relative w-full">
         <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('travelers')}>
-            <div className='block border border-grey-400 rounded-sm p-2'>
+            <div className='block w-full border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
                     <HowToRegIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
-                    <div className='search_asset'>
+                    <div className='search_asset flex flex-col'>
                       <label className="text-xs">Nombre de voyageurs</label>
                         <input type="text" id="travelers"
                         className="hidden"
@@ -136,12 +142,13 @@ const Home = function(){
                     </div>
                 </div>
             </div>
+            
+        </div>
             {activePopup === 'travelers' && (
               <div className="absolute left-0 top-full mt-2 w-full">
                 <Travelers />
               </div>
             )}
-        </div>
         </div>
 
         {/* search button */}
