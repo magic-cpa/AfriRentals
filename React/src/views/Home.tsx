@@ -59,12 +59,12 @@ const Home: React.FC = function(){
         <TypingEffect text={Text} />
       </div>
       <form className='search_rental' onSubmit={HandleSearchRent}>
-        <div className="main_searching_bar flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" >
+        <div className="main_searching_bar h-full flex gap-4 bg-white bg-opacity-75 p-8 rounded-lg shadow-lg" >
         
-        <div className="relative w-full">
+        <div className="relative w-full h-full">
         {/* Where to go */}
         <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('location')}>
-            <div className='block w-full border border-grey-400 rounded-sm p-2'>
+            <div className='block w-full h-full border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
             <AddLocationAltIcon style={{ fontSize: '2rem' }} className="mr-2 text-gray-600" />
             <div className='search_asset'>
@@ -92,17 +92,21 @@ const Home: React.FC = function(){
     </div>
 
         {/* Booking dates */}
-        <div className="relative w-full">
+        <div className="relative w-full h-full">
         <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('booking')}>
-            <div className='block w-full border border-grey-400 rounded-sm p-2'>
+            <div className='block w-full h-full border border-grey-400 rounded-sm p-2'>
             <div className="flex items-center mb-2">
             <CalendarMonthIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
             <div className='search_asset'>
               <div className='flex flex-col'>
                 <label className="text-xs">dates de réservation</label>
                 <div>
-                  <p className='text-xs'><span className='font-bold'>date dabut:</span> {checkInDate.format('YYYY-MM-DD')}</p>
-                  <span className='text-xs'> <span className='font-bold'>date fin:</span> {checkOutDate.format('YYYY-MM-DD')}</span>
+                  <p className='text-xs'><span className='font-bold'>date dabut:</span> 
+                  {checkInDate.format('YYYY-MM-DD')}
+                  </p>
+                  <p className='text-xs'> <span className='font-bold'>date fin:</span>
+                   {checkOutDate.format('YYYY-MM-DD')}
+                  </p>
                 </div>
               </div>
               <input
@@ -137,9 +141,9 @@ const Home: React.FC = function(){
         </div>
 
         {/* Travelers */}
-        <div className="relative w-full">
+        <div className="relative w-full h-full">
         <div className="list_search flex justify-center items-center borde" onClick={() => handlePopup('travelers')}>
-            <div className='block w-full border border-grey-400 rounded-sm p-2'>
+            <div className='block w-full h-full border border-grey-400 rounded-sm p-2'>
                 <div className="flex items-center mb-2">
                     <HowToRegIcon style={{fontSize:'2rem'}} className="mr-2 text-gray-600"/>
                     <div className='search_asset flex flex-col'>
