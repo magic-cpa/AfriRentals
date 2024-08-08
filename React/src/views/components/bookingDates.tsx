@@ -13,6 +13,19 @@ interface BoookingDateProps {
 }
 const BoookingDate: React.FC<BoookingDateProps> = function({ checkInDate, checkOutDate, setCheckInDate, setCheckOutDate }){
     const currentDate = dayjs();
+
+    const handleCheckInDateChange = (date: Dayjs | null) => {
+        if (date) {
+            setCheckInDate(date);
+        }
+    };
+
+    const handleCheckOutDateChange = (date: Dayjs | null) => {
+        if (date) {
+            setCheckOutDate(date);
+        }
+    };
+
     return(
         <>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -22,8 +35,8 @@ const BoookingDate: React.FC<BoookingDateProps> = function({ checkInDate, checkO
                     <label className="block mb-2 text-sm font-medium text-gray-700">Check-in</label>
                     <DateCalendar
                     value={checkInDate}
-                    defaultValue={currentDate}
-                    onChange={(date)=>setCheckInDate(date as Dayjs)}
+                    minDate={currentDate}
+                    onChange={handleCheckInDateChange}
                     views={['year', 'month', 'day']}
                     />
                 </div>
@@ -33,8 +46,8 @@ const BoookingDate: React.FC<BoookingDateProps> = function({ checkInDate, checkO
                     <label className="block mb-2 text-sm font-medium text-gray-700">Check-out</label>
                     <DateCalendar
                     value={checkOutDate}
-                    defaultValue={currentDate}
-                    onChange={(date)=>setCheckOutDate(date as Dayjs)}
+                    minDate={currentDate}
+                    onChange={handleCheckOutDateChange}
                     views={['year', 'month', 'day']}
                     />
                 </div>
