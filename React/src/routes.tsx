@@ -34,7 +34,7 @@ const routes: RouteObject[] = [
           path: 'authentication',
           children: [
             {
-              path: 'login',
+              path: 'signin',
               element: <Login />,
             },
             {
