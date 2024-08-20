@@ -25,7 +25,8 @@ interface  SignUpFormProps{
     formData:{
         firstName: string, 
         lastName: string,
-        email: string
+        email: string, 
+        dateOfBirth: string,
         password: string,
         confirmPassword: string
     }
@@ -92,6 +93,21 @@ return (
                   autoComplete="email"
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>
+      <TextField
+        required
+        fullWidth
+        name="dateOfBirth"
+        label="Date of Birth"
+        type="date"
+        id="dateOfBirth"
+        value={formData.dateOfBirth}
+        onChange={onInputChange}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+    </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -135,7 +151,7 @@ return (
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/authentication/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
