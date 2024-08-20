@@ -5,8 +5,6 @@ import {
     Container,
     CssBaseline,
     TextField,
-    FormControlLabel,
-    Checkbox,
     Link,
     Grid,
     Box,
@@ -24,8 +22,7 @@ interface  SignInFormProps{
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
     formData:{
         email: string
-        password: string,
-        confirmPassword: string
+        password: string
     }
     onInputChange: (e: React.ChangeEvent<HTMLInputElement>)=> void 
 }
@@ -78,25 +75,12 @@ return (
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="ConfirmPassword"
-                  type="password"
-                  id="ConfirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={onInputChange}
-                  autoComplete="confirm-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -108,7 +92,7 @@ return (
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/authentication/signup" variant="body2">
                   Dont have an account? Sign up
                 </Link>
               </Grid>
