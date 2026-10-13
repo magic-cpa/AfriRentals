@@ -1,4 +1,3 @@
-import {useState, useEffect} from 'react'
 import {Suspense, lazy} from 'react'
 import type { RouteObject } from 'react-router-dom'
 import MainLayout from './layouts/mainLayout';
@@ -18,6 +17,7 @@ const Loadable = (Component:any)=> (props:JSX.IntrinsicAttributes)=>
 const Home = Loadable(lazy(() => import('./views/Home')))
 const Login = Loadable(lazy(()=> import('./views/auth/login')))
 const Signup = Loadable(lazy(()=> import('./views/auth/signup')))
+const BecomeAHost = Loadable(lazy(() => import('./views/BecomeAHost')))
 
 
 
@@ -42,6 +42,10 @@ const routes: RouteObject[] = [
               element: <Signup />,
             },
           ],
+        },
+        {
+          path: 'become-a-host',
+          element: <BecomeAHost />,
         },
       ],
     },
