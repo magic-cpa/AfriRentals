@@ -1,7 +1,6 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import SignUpForm from "../components/auth/SignUpFrom"
-import api from "../../services/api"
 import axios from "axios"
 
 
