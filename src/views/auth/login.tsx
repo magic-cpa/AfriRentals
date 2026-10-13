@@ -1,6 +1,5 @@
 import { useState } from "react"
 import SignInForm from "../components/auth/LoginForm"
-import api from "../../services/api"
 import axios from "axios"
 
 const Login : React.FC = function(){
