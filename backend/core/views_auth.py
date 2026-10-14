@@ -59,6 +59,16 @@ class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"LoginView received content_type={request.content_type} body_len={len(request.body)}")
+        try:
+            keys = list(request.data.keys())
+        except Exception as e:
+            logger.exception('Failed to access request.data')
+            keys = []
+        logger.info(f"LoginView request.data keys={keys}")
+
         identifier = request.data.get('email') or request.data.get('username')
         password = request.data.get('password')
         if not identifier or not password:
