@@ -6,22 +6,22 @@ Authentication: Bearer JWT in Authorization header or HttpOnly cookie (recommend
 
 ## Auth
 POST /auth/signup
-- Body: { first_name, last_name, email, date_of_birth, password }
-- Success: 201 { id, email, first_name, last_name }
+- Body (frontend fields): { firstName, lastName, email, dateOfBirth, password, confirmPassword }
+- Server maps frontend fields to user model and returns: 201 { id, username (email), first_name, last_name, email }
 - Errors: 400 validation, 409 email exists
 
 POST /auth/login
-- Body: { email, password }
-- Success: 200 { access_token, refresh_token, user: { id, email, first_name, last_name } }
+- Body: { email, password } or { username, password }
+- Server accepts email OR username for login and returns: 200 { access, refresh, user: { id, username, first_name, last_name, email } }
 - Errors: 401 invalid credentials
 
 POST /auth/logout
-- Body: none (or refresh token)
-- Success: 204
+- Body: { refresh }
+- Success: 204 (refresh token blacklisted)
 
 GET /auth/me
-- Auth required
-- Success: 200 { id, email, profile: { display_name, avatar_url, role } }
+- Auth required (Authorization: Bearer <access>)
+- Success: 200 { id, username, first_name, last_name, email }
 
 ## Users / Profiles
 GET /users/:id
