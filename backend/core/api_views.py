@@ -5,6 +5,7 @@ from .permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from django.db import models
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -40,3 +41,38 @@ class BookingViewSet(mixins.CreateModelMixin,
 
     def perform_create(self, serializer):
         serializer.save(guest=self.request.user)
+
+    @action(detail=True, methods=['post'], url_path='confirm')
+    def confirm(self, request, pk=None):
+        booking = self.get_object()
+        user = request.user
+        # Only the property owner or admin can confirm
+        if not (user.is_staff or booking.property.owner == user):
+            return Response({'detail': 'Not authorized to confirm this booking'}, status=status.HTTP_403_FORBIDDEN)
+        # Only pending bookings can be confirmed
+        if booking.status != 'pending':
+            return Response({'detail': 'Only pending bookings can be confirmed'}, status=status.HTTP_400_BAD_REQUEST)
+        # Double-check overlapping confirmed bookings
+        overlapping = Booking.objects.filter(
+            property=booking.property,
+            status='confirmed',
+            check_in__lt=booking.check_out,
+            check_out__gt=booking.check_in,
+        ).exclude(id=booking.id).exists()
+        if overlapping:
+            return Response({'detail': 'Property already booked for these dates'}, status=status.HTTP_409_CONFLICT)
+        booking.status = 'confirmed'
+        booking.save()
+        return Response(BookingSerializer(booking).data)
+
+    @action(detail=True, methods=['post'], url_path='reject')
+    def reject(self, request, pk=None):
+        booking = self.get_object()
+        user = request.user
+        if not (user.is_staff or booking.property.owner == user):
+            return Response({'detail': 'Not authorized to reject this booking'}, status=status.HTTP_403_FORBIDDEN)
+        if booking.status not in ('pending',):
+            return Response({'detail': 'Only pending bookings can be rejected'}, status=status.HTTP_400_BAD_REQUEST)
+        booking.status = 'rejected'
+        booking.save()
+        return Response(BookingSerializer(booking).data)
