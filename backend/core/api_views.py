@@ -5,6 +5,7 @@ from .permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from django.db import models
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
