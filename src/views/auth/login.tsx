@@ -1,6 +1,6 @@
 import { useState } from "react"
 import SignInForm from "../components/auth/LoginForm"
-import axios from "axios"
+import api from '../../services/api'
 
 const Login : React.FC = function(){
     const [FormData, setFormData] = useState({
@@ -20,7 +20,7 @@ const Login : React.FC = function(){
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         try{
-            const response = await axios.post('/api/login', FormData)
+                const response = await api.post('/auth/login', FormData)
             console.log(response.data)
         }catch(e){
             console.error('error:', e)
