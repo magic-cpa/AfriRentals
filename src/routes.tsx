@@ -18,6 +18,7 @@ const Home = Loadable(lazy(() => import('./views/Home')))
 const Login = Loadable(lazy(()=> import('./views/auth/login')))
 const Signup = Loadable(lazy(()=> import('./views/auth/signup')))
 const BecomeAHost = Loadable(lazy(() => import('./views/BecomeAHost')))
+const HostBookings = Loadable(lazy(() => import('./views/HostBookings')))
 
 
 
@@ -46,6 +47,15 @@ const routes: RouteObject[] = [
         {
           path: 'become-a-host',
           element: <BecomeAHost />,
+        },
+        {
+          path: 'host',
+          children: [
+            {
+              path: 'bookings',
+              element: <HostBookings />,
+            }
+          ]
         },
       ],
     },

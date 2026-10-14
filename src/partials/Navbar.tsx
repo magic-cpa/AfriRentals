@@ -27,6 +27,7 @@ const Navbar = () => {
 
         <div className="hidden items-center gap-4 md:flex">
           <Link to="/authentication/signin" className="text-sm font-semibold text-[#173d38]">Sign in</Link>
+          <Link to="/host/bookings" className="text-sm font-semibold text-[#173d38]">Host bookings</Link>
           <Link to="/become-a-host" className="rounded-md bg-[#173d38] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#285a51]">Become a host</Link>
         </div>
 
