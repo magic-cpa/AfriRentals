@@ -55,6 +55,31 @@ class SignupView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class LoginView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        identifier = request.data.get('email') or request.data.get('username')
+        password = request.data.get('password')
+        if not identifier or not password:
+            return Response({'detail': 'Must include username/email and password.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            if '@' in identifier:
+                user = User.objects.get(email=identifier)
+            else:
+                user = User.objects.get(username=identifier)
+        except User.DoesNotExist:
+            return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        from django.contrib.auth import authenticate
+        user = authenticate(request, username=user.username, password=password)
+        if user is None:
+            return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        refresh = RefreshToken.for_user(user)
+        return Response({'access': str(refresh.access_token), 'refresh': str(refresh), 'user': UserSerializer(user).data})
+
+
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
