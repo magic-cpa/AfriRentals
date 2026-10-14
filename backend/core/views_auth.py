@@ -9,6 +9,13 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # Make username optional and accept email in payload
+    username = TokenObtainPairSerializer.get_token.__self__.__class__.__dict__.get('username', None)
+    # Provide fields that accept email as alternative
+    from rest_framework import serializers as drf_serializers
+    username = drf_serializers.CharField(required=False)
+    email = drf_serializers.EmailField(write_only=True, required=False)
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
