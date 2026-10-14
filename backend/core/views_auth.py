@@ -17,6 +17,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
+        # Allow login via email or username
+        initial = self.initial_data
+        if 'email' in initial and 'username' not in attrs:
+            try:
+                user = User.objects.get(email=initial.get('email'))
+                # inject username into attrs so parent validation can authenticate
+                attrs['username'] = user.get_username()
+            except User.DoesNotExist:
+                # leave attrs as-is; authentication will fail in parent validate
+                pass
+
         data = super().validate(attrs)
         data['user'] = UserSerializer(self.user).data
         return data
